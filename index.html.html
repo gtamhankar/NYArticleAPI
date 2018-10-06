@@ -1,0 +1,170 @@
+<!DOCTYPE <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>NewYork</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+<link rel =" stylesheet" href ="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body>
+
+        <div class="jumbotron text-center">
+                <div class="container">
+                  <h1 class="display-4">New York Times Search</h1>
+                </div>
+            </div>
+
+        
+        <div class="card">
+                <div class="card-header">
+                    Search Parameters
+                </div>
+                <div class="card-body">
+                  
+                <p class="card-text">Search Term:</p>
+                <div>
+                    <input class="form-control" id="search-input" type="text" placeholder="Default input">
+                </div>
+
+                  <!--DropDown-->
+                  <p class="card-text"></p>
+                  <div class="form-group">
+                        <label for="exampleFormControlSelect1">Number of Records to Retrieve</label>
+                        <select class="form-control" id="dropDown">
+                          <option>1</option>
+                          <option>5</option>
+                          <option>10</option>
+                        </select>
+                      </div>
+
+                  <p class="card-text">Start Year (optional):</p>
+                  <input class="form-control" id="start-year" type="text" placeholder="Default input">
+
+                  <p class="card-text mt-3">End Year (optional):</p>
+                  <input class="form-control" id= "end-year" type="text" placeholder="Default input">
+                  
+                  <!--Buttons-->
+
+                  <div id= "search"><a href="#" class="btn btn-primary float-left ml-2 mt-2">Search</a></div>
+                  <div id= "clear"><a href="#" class="btn btn-primary float-left ml-2 mt-2">Clear Results</a></div>
+                </div>
+              </div>
+
+              <div class="card-header">
+                    Top Articles
+                </div>
+                <div class="card-body article-dump"></div>
+                
+                <div class="fixed-bottom text-center">
+                <footer>Made with lots and lots of love</footer>
+            </div>
+                
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        //Button capturing User Input
+
+var param = {
+  searchterm: "sports",
+  num: 5,
+  startYear: "",
+  endYear: ""
+ };
+
+
+    $("#search").on("click" , function(event){
+        param.searchterm = $("#search-input").val();
+        console.log($("#search-input").val());
+
+        param.num = $("#dropDown").val();
+        console.log($("#dropDown").val());
+
+        param.startYear = $("#start-year").val();
+        console.log($("#start-year").val());
+
+        param.endYear = $("#end-year").val();
+        console.log($("#end-year").val());
+    
+var response;
+
+
+var url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
+url += '?' + $.param({
+  'api-key': "9d44a4a782ac45c4aa94050f7db66845",
+  'q': $.param.searchterm,
+  'sort': "newest"
+});
+$.ajax({
+  url: url,
+  method: 'GET',
+}).done(function(response) {
+
+  for (i = 0 ; i< param.num; i++)
+   {
+    console.log (response);
+   console.log(param.num);
+    console.log (response.response.docs[i].headline);
+
+    var out =  "Headline: " + response.response.docs[i].headline.main ;
+
+    out = out + "<br>" +  response.response.docs[i].web_url;
+ var p = $("<p>").html( out );
+ $(".article-dump").prepend(p);
+ 
+
+   }
+
+
+  
+}).fail(function(err) {
+  throw err;
+
+});
+
+});
+
+    $("#clear").on("click" , function(event){
+        $(".article-dump").empty();
+        console.log("Clear Results was clicked");
+    });
+
+
+    </script>
+                
+               
+         
+
+        <footer>Made with lots and lots of love</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+        </div>
+
+    
+</body>
+</html>
